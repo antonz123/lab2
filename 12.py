@@ -1,27 +1,35 @@
 import csv
 
 
-def row_len(books):
+def count_long_titles(books):
+    """Count records with titles longer than 30 characters."""
     books.seek(0)
     reader = csv.DictReader(books, delimiter=';')
     counter = 0
     for row in reader:
         if len(str(row['Название'])) > 30:
             counter += 1
-    print(f'Задание 1:\nКоличество записей, у которых название длиннее 30 символов: {counter}')
+    print(
+        'Задание 1:\n'
+        f'Количество записей, у которых название длиннее 30 символов: {counter}'
+    )
 
 
-def find_author(books):
+def find_books_by_author(books):
+    """Find books by author published in specific years."""
     books.seek(0)
     reader = csv.DictReader(books, delimiter=';')
     print('Задание 2:')
     author = input('Введите ФИО автора: ')
     found_books = []
+    
     for row in reader:
         if author == row['Автор (ФИО)']:
-            if int(row['Дата поступления'][6:10]) in [2014, 2016, 2017]:
+            year = int(row['Дата поступления'][6:10])
+            if year in [2014, 2016, 2017]:
                 found_books.append(row['Название'])
-    if len(found_books) != 0:
+    
+    if found_books:
         print('Найденные книги:')
         for book in found_books:
             print(book)
@@ -30,6 +38,6 @@ def find_author(books):
 
 
 if __name__ == '__main__':
-    with open('books.csv') as books:
-        row_len(books)
-        find_author(books)
+    with open('books.csv', encoding='utf-8') as books:
+        count_long_titles(books)
+        find_books_by_author(books)
